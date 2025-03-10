@@ -1,27 +1,17 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="main-news">
-        <h2>Breaking News</h2>
-        <div class="news-card">
-            <h3>Big Headline Goes Here</h3>
-            <p>Short description of the breaking news.</p>
-            <a href="#">Read More</a>
-        </div>
-    </div>
-
-    <div class="news-section">
-        <h2>Latest News</h2>
-        <div class="news-grid">
+    <div class="news-container">
+        <h1>Latest News</h1>
+        {% for article in articles %}
             <div class="news-item">
-                <h3>News Title</h3>
-                <p>Short summary...</p>
+                <h2><a href="{{ article.url }}" target="_blank">{{ article.title }}</a></h2>
+                <p>{{ article.description }}</p>
+                <small>Source: {{ article.source.name }}</small>
             </div>
-            <div class="news-item">
-                <h3>Another News</h3>
-                <p>Short summary...</p>
-            </div>
-        </div>
+        {% empty %}
+            <p>No news available.</p>
+        {% endfor %}
     </div>
 {% endblock %}
 

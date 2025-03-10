@@ -1,14 +1,16 @@
 from django.shortcuts import render
+import requests
 
 def home(request):
-    trending_articles = [
-        {"title": "AI Revolution in 2025", "summary": "AI is changing the world rapidly.", "image_url": "https://source.unsplash.com/400x250/?technology", "link": "#"},
-        {"title": "Climate Change Updates", "summary": "New studies show global warming effects.", "image_url": "https://source.unsplash.com/400x250/?nature", "link": "#"}
-    ]
+    API_KEY = "8ac3b9a486974824a3c3f60521c63185"  # Replace with your actual API key
+    url = f"https://newsapi.org/v2/top-headlines?country=us&apiKey={API_KEY}"  
+    
+    response = requests.get(url)
+    news_data = response.json()
+    print(news_data)
 
-    articles = [
-        {"title": "Sports Highlights", "summary": "Latest sports news from around the world.", "image_url": "https://source.unsplash.com/400x250/?sports", "link": "#"},
-        {"title": "Stock Market Trends", "summary": "Markets are fluctuating in Q1 2025.", "image_url": "https://source.unsplash.com/400x250/?finance", "link": "#"}
-    ]
+    articles = news_data.get("articles", [])  # Get news articles
+    if not articles:
+        print("No articles found:", news_data) 
 
-    return render(request, "home.html", {"trending_articles": trending_articles, "articles": articles})
+    return render(request, "home.html", {"articles": articles})

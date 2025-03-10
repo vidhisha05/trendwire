@@ -119,7 +119,7 @@ USE_TZ = True
 STATIC_URL = 'static/'
 import os
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'your_app/static'),
+    os.path.join(BASE_DIR, 'news/static'),
 ]
 
 # Default primary key field type
