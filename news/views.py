@@ -1,4 +1,5 @@
 import re
+import html
 import feedparser
 from django.shortcuts import render
 
@@ -8,6 +9,7 @@ def google_news_feed(request):
     articles =[]
     for entry in feed.entries[:10]:
         clean_summary = re.sub(r"<[^>]*>", "", entry.summary) 
+        clean_summary = html.unescape(clean_summary)
         articles.append(
             {
                 "title": entry.title,
