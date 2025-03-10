@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Latest News from Google</h1>
+    <ul>
+        {% for article in articles %}
+            <li>
+                <h2><a href="{{ article.link }}" target="_blank">{{ article.title }}</a></h2>
+                <p>{{ article.summary }}</p>
+                <small>Published: {{ article.published }}</small>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

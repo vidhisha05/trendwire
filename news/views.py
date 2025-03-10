@@ -1,16 +1,19 @@
+
+import feedparser
 from django.shortcuts import render
-import requests
 
-def home(request):
-    API_KEY = "8ac3b9a486974824a3c3f60521c63185"  # Replace with your actual API key
-    url = f"https://newsapi.org/v2/top-headlines?country=us&apiKey={API_KEY}"  
-    
-    response = requests.get(url)
-    news_data = response.json()
-    print(news_data)
+def google_news_feed(request):
+    rss_url = "https://news.google.com/rss?hl=en-IN&gl=IN&ceid=IN:en"
+    feed = feedparser.parse(rss_url)
 
-    articles = news_data.get("articles", [])  # Get news articles
-    if not articles:
-        print("No articles found:", news_data) 
+    articles = [
+        {
+            "title": entry.title,
+            "link": entry.link,
+            "published": entry.published,
+            "summary": entry.summary,
+        }
+        for entry in feed.entries[:10]
+    ]
 
-    return render(request, "home.html", {"articles": articles})
+    return render(request, "news_feed.html", {"articles": articles})
