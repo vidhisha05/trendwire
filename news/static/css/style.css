@@ -1,0 +1,89 @@
+/* General Styles */
+body {
+    font-family: 'Times New Roman', serif;
+    margin: 0;
+    padding: 0;
+    background: #f8f8f8;
+}
+
+/* Top Bar */
+.top-bar {
+    background: #eee;
+    padding: 5px 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.epaper {
+    color: red;
+    font-weight: bold;
+}
+
+.login-btns a {
+    margin-left: 10px;
+    text-decoration: none;
+}
+
+/* Header */
+header {
+    text-align: center;
+    padding: 10px 0;
+}
+
+.logo {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+/* Navbar */
+nav {
+    background: #fff;
+    border-top: 2px solid red;
+    padding: 10px 0;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    font-weight: bold;
+    color: black;
+}
+
+/* Main News Section */
+.main-news {
+    padding: 20px;
+    text-align: center;
+}
+
+.news-card {
+    background: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* News Grid */
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 20px;
+}
+
+.news-item {
+    background: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}

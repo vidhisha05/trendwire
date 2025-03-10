@@ -1,33 +1,47 @@
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'news/style.css' %}">
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TrendWire - Your News Hub</title>
-    <style>
-        body { font-family: Arial, sans-serif; background: #f8f9fa; margin: 0; }
-        .navbar { background: #007bff; padding: 15px; text-align: center; color: white; font-size: 1.5rem; }
-        .container { width: 80%; margin: auto; padding: 20px; }
-        .news-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .news-card { background: white; padding: 15px; border-radius: 8px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); }
-        .news-card img { width: 100%; border-radius: 8px; }
-        .news-card h3 { margin: 10px 0; }
-        .footer { text-align: center; padding: 10px; background: #333; color: white; margin-top: 20px; }
-    </style>
+    <title>TrendWire - News</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-
-    <div class="navbar">
-        <a href="/" style="color: white; text-decoration: none;">TrendWire</a>
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <p>March 10, 2025 | <span class="epaper">e-Paper</span></p>
+        <div class="login-btns">
+            <a href="#">Login</a>
+            <a href="#" class="subscribe">Subscribe</a>
+        </div>
     </div>
 
-    <div class="container">
-        {% block content %} {% endblock %}
-    </div>
+    <!-- HEADER -->
+    <header>
+        <h1 class="logo">TRENDWIRE</h1>
+    </header>
 
-    <div class="footer">
-        &copy; 2025 TrendWire. All Rights Reserved.
-    </div>
+    <!-- NAVBAR -->
+    <nav>
+        <ul>
+            <li><a href="#">India</a></li>
+            <li><a href="#">World</a></li>
+            <li><a href="#">Movies</a></li>
+            <li><a href="#">Sports</a></li>
+            <li><a href="#">Science</a></li>
+            <li><a href="#">Business</a></li>
+            <li><a href="#">Premium</a></li>
+        </ul>
+    </nav>
 
+    <!-- CONTENT BLOCK -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
 </body>
 </html>
+
