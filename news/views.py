@@ -1,6 +1,7 @@
 import re, html
 import requests
 import feedparser
+from django.http import JsonResponse
 from django.shortcuts import render
 
 def google_news_feed(request):
@@ -28,7 +29,7 @@ def google_news_feed(request):
     return render(request, "news_feed.html", {"articles": articles})
 
 # SerpAPI details change this when limit of 100 is over
-SERPAPI_KEY = "9ce3aab6d473dead5b8c2ae73b1824943789135ed677227f58f8056b01f09f2e"
+SERPAPI_KEY = ""
 
 def get_google_image(query):
     search_url = "https://serpapi.com/search"
@@ -83,3 +84,42 @@ def fact_check_feed(request):
             })
 
     return render(request, 'fact_check.html', {'articles': articles})
+
+# Google Fact Check API Key (Replace with your actual API key)
+API_KEY = "AIzaSyDm-XA2llSNiwnhTszEJuzp897kiZekbH4"
+
+def fake_or_what(request):
+    results = []
+    if request.method == "POST":
+        query = request.POST.get("query")
+        url = f"https://factchecktools.googleapis.com/v1alpha1/claims:search?query={query}&key={API_KEY}"
+        response = requests.get(url)
+        data = response.json()
+
+        if "claims" in data:
+            for claim in data["claims"][:3]:
+                claim_info = {
+                    "claim": claim.get("text", "No claim text available"),
+                    "claimant": claim.get("claimant", "Unknown"),
+                    "rating": "No rating available",  # Default value
+                    "sources": []  # Store fact-check links
+                }
+                # Extract max 3 reviews only
+                reviews = claim.get("claimReview", [])[:3]
+                for review in reviews:
+                    review_info = {
+                        "fact_checker": review["publisher"].get("name", "Unknown"),
+                        "rating": review.get("textualRating", "No rating available"),
+                        "url": review.get("url", "#")
+                    }
+
+                    # Set rating from the first review (assuming it's most relevant)
+                    if claim_info["rating"] == "No rating available":
+                        claim_info["rating"] = review_info["rating"]
+
+                    claim_info["sources"].append(review_info)
+
+                results.append(claim_info)
+
+    
+    return render(request, "fake_or_what.html", {"results": results})
