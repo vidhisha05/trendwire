@@ -12,7 +12,7 @@
                                 <a href="{{ article.link }}" target="_blank">{{ article.title }}</a>
                             </h5>
                             <p class="card-text"><b>Claim : </b>{{ article.claim }}</p>
-                            <p class="card-text"><b>Fact : </b>{{ article.fact }}</p>
+                            <p class="card-text"><b>Fact : </b>{{ article.fact|safe }}</p>
                             <small class="text-muted">Published: {{ article.published }}</small>
                         </div>
                     </div>

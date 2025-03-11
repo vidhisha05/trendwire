@@ -14,7 +14,7 @@
 </head>
 <body>
     <!-- TOP BAR -->
-    <div class="top-bar">
+    <div class="top-bar d-flex justify-content-between p-2">
         <h6>March 10, 2025 | <span class="epaper">e-Paper</span></h6>
         <div class="login-btns">
             <h6>N P V Mallika</h6>
@@ -24,24 +24,27 @@
 
     <!-- HEADER -->
     <header>
-        <h1 class="logo">TRENDWIRE</h1>
+        <h1 class="logo text-center">TRENDWIRE</h1>
     </header>
 
     <!-- NAVBAR -->
-    <nav>
-        <ul>
-            <li><a href="#">Fake or what ?</a></li>
-            <li><a href="{% url 'fact_check' %}">Trending Misinformation</a></li>
-        
-            
+    <nav class="mb-4">
+        <ul class="nav justify-content-center">
+            <li class="nav-item"><a class="nav-link" href="#">Fake or what?</a></li>
+            <li class="nav-item"><a class="nav-link" href="{% url 'fact_check' %}">Trending Misinformation</a></li>
         </ul>
     </nav>
 
-    <!-- CONTENT BLOCK -->
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
+    <!-- MAIN CONTENT -->
+    <div class="container">
+        <div class="row">
+            <!-- News Section (Left Side) -->
+            <div class="col-md-8">
+                {% block content %}
+                {% endblock %}
+            </div>      
+            </div>
+        </div>
+    </div>
 </body>
 </html>
-

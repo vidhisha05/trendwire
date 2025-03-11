@@ -1,11 +1,48 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1 class="text-center my-4">Latest News</h1>
-    <div class="container-fluid px-5">
-        <div class="row g-4">
+    <div class="container-fluid">
+        <!-- Weather & Stock Section at the Top -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Weather in Hyderabad</h5>
+                        <img src="{{ weather.icon }}" alt="Weather Icon">
+                        <p><strong>{{ weather.temperature }}°C</strong> - {{ weather.description }}</p>
+                        <p>Humidity: {{ weather.humidity }}%</p>
+                        <p>Wind Speed: {{ weather.wind_speed }} m/s</p>
+                        <p>Pressure: {{ weather.pressure }} hPa</p>
+                        <p>Sunrise: {{ weather.sunrise }} | Sunset: {{ weather.sunset }}</p>
+                    </div>
+                </div>
+            </div>
+
+            {% if stock.symbol %}
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Stock Market</h5>
+                        <p><strong>{{ stock.symbol }}</strong>: ${{ stock.latest_price }}</p>
+                        <p>
+                            {% if stock.change < 0 %}
+                                <span style="color: red;">▼ {{ stock.change }}</span>
+                            {% else %}
+                                <span style="color: green;">▲ {{ stock.change }}</span>
+                            {% endif %}
+                        </p>
+                        <canvas id="stockChart"></canvas>  <!-- Stock Chart -->
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Latest News Section -->
+        <h1 class="text-center my-4">Latest News</h1>
+        <div class="row">
             {% for article in articles %}
-                <div class="col-12 col-md-6">  <!-- 1 column on small, 2 on medium+ -->
+                <div class="col-12 col-md-6 col-lg-4">
                     <div class="card h-100">
                         <img class="card-img-top img-fluid w-50 mx-auto d-block" src="{{ article.image }}" alt="News image">
                         <div class="card-body">
@@ -24,4 +61,44 @@
             {% endfor %}
         </div>
     </div>
+<!-- Chart.js -->
+<!-- Ensure Chart.js is included -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{% if stock.history and stock.history.dates and stock.history.prices %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var canvas = document.getElementById('stockChart');
+        if (canvas) {
+            var ctx = canvas.getContext('2d');
+
+            // Parse JSON safely from Django
+            var dates = JSON.parse('{{ stock.history.dates|safe }}');  // ✅ Convert to JS array
+            var prices = JSON.parse('{{ stock.history.prices|safe }}');  // ✅ Convert to JS array
+
+            var stockChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: dates,  // Use parsed JSON
+                    datasets: [{
+                        label: "{{ stock.symbol }} Stock Price",
+                        data: prices,  // Use parsed JSON
+                        borderColor: 'blue',
+                        backgroundColor: 'rgba(0, 0, 255, 0.1)',
+                        borderWidth: 2,
+                        pointRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: false }
+                    }
+                }
+            });
+        }
+    });
+</script>
+{% endif %}
+
 {% endblock %}
