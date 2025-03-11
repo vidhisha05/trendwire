@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container" style="max-width: 90%; margin: 0 auto; padding: 0 50px;">  <!-- Added 50px margins -->
+    <h2 class="text-center my-4">Check if News is Fake or Real</h2>
+    
+    <form method="POST" class="mb-4">
+        {% csrf_token %}
+        <div class="input-group">
+            <input type="text" class="form-control" id="query" name="query" placeholder="Enter News/Claim" required>
+            <button type="submit" class="btn btn-lg btn-primary px-4">Check Fact</button>
+        </div>
+    </form>
+
+    {% if results %}
+        <h3 class="mb-3">Fake News related to your search :</h3>
+        
+        <div class="row">
+            {% for result in results %}
+                <div class="col-md-4 mb-4">  <!-- Added spacing between cards -->
+                    <div class="card shadow h-100 d-flex flex-column">
+                        <div class="card-header bg-light text-dark">
+                            <h4 class="mb-0"><strong>Result - </strong><span class="text-danger">{{ result.rating }}</span></h4>
+                        </div>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">Claim:</h5>
+                            <h5><strong>{{ result.claim }}</strong></h5>
+                            
+                            <div class="mt-auto">  <!-- Pushed button to bottom -->
+                                <h5>Claimed by: {{ result.claimant }}</h5>
+
+                                {% for source in result.sources %}
+                                    <a href="{{ source.url }}" class="btn btn-primary btn-lg d-block mb-2" target="_blank">Source - {{ source.fact_checker }}</a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center">No fact-check results found. Try another search.</p>
+    {% endif %}
+</div>
+{% endblock %}

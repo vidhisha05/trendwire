@@ -28,10 +28,11 @@
     </header>
 
     <!-- NAVBAR -->
-    <nav class="mb-4">
-        <ul class="nav justify-content-center">
-            <li class="nav-item"><a class="nav-link" href="#">Fake or what?</a></li>
-            <li class="nav-item"><a class="nav-link" href="{% url 'fact_check' %}">Trending Misinformation</a></li>
+    <nav>
+        <ul>
+            <li><a href="{% url 'fake_or_what' %}">Fake or what ?</a></li>
+            <li><a href="{% url 'fact_check' %}">Trending Misinformation</a></li>     
+            <li><a href="{% url 'home' %}">Home</a></li>          
         </ul>
     </nav>
 
