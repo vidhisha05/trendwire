@@ -4,48 +4,104 @@
     {% load static %}
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>TrendWire - News</title>
+    
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
-
+    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            background-color: #f5f5f5;
+        }
+        .newspaper-container {
+            width: 80%;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        header {
+            text-align: center;
+            font-size: 2.5em;
+            font-weight: bold;
+            border-bottom: 3px solid black;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        nav {
+            text-align: center;
+            background: #333;
+            padding: 10px;
+        }
+        nav a {
+            color: white;
+            margin: 0 15px;
+            text-decoration: none;
+            font-size: 18px;
+        }
+        .main-content {
+            display: flex;
+            justify-content: space-between;
+        }
+        .news-section {
+            width: 70%;
+        }
+        .sidebar {
+            width: 25%;
+            border-left: 2px solid black;
+            padding-left: 15px;
+        }
+        footer {
+            text-align: center;
+            font-size: 14px;
+            padding: 10px;
+            margin-top: 20px;
+            border-top: 1px solid black;
+        }
+    </style>
 </head>
 <body>
-    <!-- TOP BAR -->
-    <div class="top-bar d-flex justify-content-between p-2">
-        <h6>March 10, 2025 | <span class="epaper">e-Paper</span></h6>
-        <div class="login-btns">
-            <h6>N P V Mallika</h6>
-            <h6>Vidhisha Singh</h6>
-        </div>
-    </div>
+    <div class="newspaper-container">
+        <!-- HEADER -->
+        <header>
+            TRENDWIRE
+            <p class="text-center" style="font-size: 14px;">The Best News from the First Hands</p>
+        </header>
 
-    <!-- HEADER -->
-    <header>
-        <h1 class="logo text-center">TRENDWIRE</h1>
-    </header>
-
-    <!-- NAVBAR -->
-    <nav>
-        <ul>
-            <li><a href="{% url 'fake_or_what' %}">Fake or what ?</a></li>
-            <li><a href="{% url 'fact_check' %}">Trending Misinformation</a></li>     
-            <li><a href="{% url 'home' %}">Home</a></li>          
-        </ul>
-    </nav>
-
-    <!-- MAIN CONTENT -->
-    <div class="container">
-        <div class="row">
-            <!-- News Section (Left Side) -->
-            <div class="col-md-8">
+        <!-- NAVIGATION BAR -->
+        <nav>
+            <a href="{% url 'fake_or_what' %}">Fake or What?</a>
+            <a href="{% url 'fact_check' %}">Trending Misinformation</a>
+            <a href="{% url 'home' %}">Home</a>
+        </nav>
+        
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <div class="news-section">
                 {% block content %}
                 {% endblock %}
-            </div>      
+            </div>
+            <div class="sidebar">
+                <h3>Daily News</h3>
+                <p>20.03.2025 - 12:35</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+                <hr>
+                <p>20.03.2025 - 12:40</p>
+                <p>Vestibulum ac diam sit amet quam vehicula elementum...</p>
+                <hr>
+                <p>20.03.2025 - 12:50</p>
+                <p>Curabitur aliquet quam id dui posuere blandit...</p>
             </div>
         </div>
+
+        <!-- FOOTER -->
+        <footer>
+            Copyright &copy; 2025 TrendWire. All rights reserved.
+        </footer>
     </div>
 </body>
 </html>
