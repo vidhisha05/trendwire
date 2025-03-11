@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1 class="text-center my-4">Fact-Checked News</h1>
+    <div class="container">
+        <div class="row">
+            {% for article in articles %}
+                <div class="col-md-6">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <a href="{{ article.link }}" target="_blank">{{ article.title }}</a>
+                            </h5>
+                            <p class="card-text"><b>Claim : </b>{{ article.claim }}</p>
+                            <p class="card-text"><b>Fact : </b>{{ article.fact }}</p>
+                            <small class="text-muted">Published: {{ article.published }}</small>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p class="text-center">No fact-check news available.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
