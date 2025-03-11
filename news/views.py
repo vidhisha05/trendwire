@@ -27,7 +27,7 @@ def google_news_feed(request):
 
     return render(request, "news_feed.html", {"articles": articles})
 
-# SerpAPI details
+# SerpAPI details change this when limit of 100 is over
 SERPAPI_KEY = "9ce3aab6d473dead5b8c2ae73b1824943789135ed677227f58f8056b01f09f2e"
 
 def get_google_image(query):
