@@ -45,3 +45,41 @@ def get_google_image(query):
         if "images_results" in results and len(results["images_results"]) > 0:
             return results["images_results"][0]["original"]  # First image URL
     return "https://via.placeholder.com/150"  # Fallback image
+
+def fact_check_feed(request):
+    rss_url = "https://factly.in/category/english/feed/"
+    feed = feedparser.parse(rss_url)
+
+    articles = []
+    for entry in feed.entries:
+        # Get the content where blockquotes exist
+        content_html = entry.content[0].value if hasattr(entry, "content") else ""
+
+        # Extract <blockquote> content
+        match = re.search(r'<blockquote.*?>(.*?)</blockquote>', content_html, re.DOTALL)
+
+        # Initialize variables with default values
+        claim = "No claim found"
+        fact = "No fact found"
+
+        if match:
+            blockquote_content = match.group(1)
+            # More flexible regex to extract Claim and Fact
+            claim_match = re.search(r'<p>\s*<strong>\s*Claim\s*:?\s*</strong>\s*(.*?)</p>', blockquote_content, re.DOTALL)
+            fact_match = re.search(r'<p>\s*<strong>\s*Fact\s*:?\s*</strong>\s*(.*?)</p>', blockquote_content, re.DOTALL)
+
+            if claim_match:
+                claim = re.sub(r'<.*?>', '', claim_match.group(1)).strip()  # Remove HTML tags
+
+            if fact_match:
+                fact = re.sub(r'<.*?>', '', fact_match.group(1)).strip()  # Remove HTML tags
+        
+        articles.append({
+            'title': entry.title,
+            'link': entry.link,
+            'published': entry.published,
+            'claim' : claim,
+            'fact' : fact
+            })
+
+    return render(request, 'fact_check.html', {'articles': articles})
