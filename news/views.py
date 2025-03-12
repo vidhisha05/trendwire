@@ -29,8 +29,8 @@ def google_news_feed(request):
             }
         )
     #  Fetch Weather & Stock Data
-    weather_data = get_weather("Hyderabad")  # Change city if needed
-    stock_data = get_stock_data("AAPL")  # Change stock symbol if needed
+    weather_data = get_weather("Hyderabad")  
+    stock_data = get_stock_data("AAPL")  
 
     #Pass Data to Template
     return render(
@@ -93,8 +93,12 @@ def fact_check_feed(request):
             'claim' : claim,
             'fact' : fact
             })
+        
+        #  Fetch Weather & Stock Data
+        weather_data = get_weather("Hyderabad")  
+        stock_data = get_stock_data("AAPL")  
 
-    return render(request, 'fact_check.html', {'articles': articles})
+    return render(request, 'fact_check.html', {'articles': articles, "weather": weather_data, "stock": stock_data})
 
 WEATHER_API_KEY = "52243387e8f08aba27d5c3e51898fbe3"  # Your API key
 
@@ -145,6 +149,11 @@ API_KEY = "AIzaSyDm-XA2llSNiwnhTszEJuzp897kiZekbH4"
 
 def fake_or_what(request):
     results = []
+
+    #  Fetch Weather & Stock Data
+    weather_data = get_weather("Hyderabad")  
+    stock_data = get_stock_data("AAPL") 
+
     if request.method == "POST":
         query = request.POST.get("query")
         url = f"https://factchecktools.googleapis.com/v1alpha1/claims:search?query={query}&key={API_KEY}"
@@ -176,5 +185,4 @@ def fake_or_what(request):
 
                 results.append(claim_info)
 
-    
-    return render(request, "fake_or_what.html", {"results": results})
+    return render(request, "fake_or_what.html", {"results": results, "weather": weather_data, "stock": stock_data})

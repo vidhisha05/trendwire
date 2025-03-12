@@ -18,7 +18,7 @@
             background-color: #f5f5f5;
         }
         .newspaper-container {
-            width: 80%;
+            width: 90%;
             margin: auto;
             background: white;
             padding: 20px;
@@ -62,6 +62,17 @@
             margin-top: 20px;
             border-top: 1px solid black;
         }
+        #stockChart {
+            width: 100% !important;
+            height: 300px !important; /* Adjust height */
+        }
+        .sidebar .card {
+            border: 5px solid darkred;  /* Outer dark red border */
+            box-shadow: 0 0 0 5px white, 0 0 0 10px rgb(44, 43, 43); /* White and dark grey layers */
+            margin-top: 20px;  /* Adds space above */
+            margin-bottom: 20px; /* Adds space below */
+        }
+
     </style>
 </head>
 <body>
@@ -91,78 +102,82 @@
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body text-center">
-                                <h5 class="card-title">Weather in Hyderabad</h5>
-                                <img src="{{ weather.icon }}" alt="Weather Icon">
-                                <p><strong>{{ weather.temperature }}°C</strong> - {{ weather.description }}</p>
-                                <p>Humidity: {{ weather.humidity }}%</p>
-                                <p>Wind Speed: {{ weather.wind_speed }} m/s</p>
-                                <p>Pressure: {{ weather.pressure }} hPa</p>
-                                <p>Sunrise: {{ weather.sunrise }} | Sunset: {{ weather.sunset }}</p>
+                                <h3 class="card-header bg-light text-dark"><u>     Weather in Hyderabad    </u></h3>
+                                <img src="{{ weather.icon }}" alt="Weather Icon" class="d-block mx-auto my-2">
+                                <div class="card-header bg-light text-dark">
+                                    <h5><strong style="color: darkblue;">{{ weather.temperature }}°C</strong> - {{ weather.description }}</h5>
+                                    <h5>Humidity: {{ weather.humidity }}%</h5>
+                                    <h5>Wind Speed: {{ weather.wind_speed }} m/s</h5>
+                                    <h5>Pressure: {{ weather.pressure }} hPa</h5>
+                                    <h5>Sunrise: {{ weather.sunrise }} | Sunset: {{ weather.sunset }}</h5>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     {% if stock.symbol %}
-                    <div class="col-md-6">
+                    <div class="col-md-12 mb-4">
                         <div class="card">
                             <div class="card-body text-center">
-                                <h5 class="card-title">Stock Market</h5>
-                                <p><strong>{{ stock.symbol }}</strong>: ${{ stock.latest_price }}</p>
-                                <p>
-                                    {% if stock.change < 0 %}
-                                        <span style="color: red;">▼ {{ stock.change }}</span>
-                                    {% else %}
-                                        <span style="color: green;">▲ {{ stock.change }}</span>
-                                    {% endif %}
-                                </p>
+                                <div class="card-header bg-light text-dark">
+                                    <h3 class="card-title"><u>    Stock Market    </u></h3>
+                                    <h5><strong>{{ stock.symbol }}</strong>: ${{ stock.latest_price }}</h5>
+                                    <h5>
+                                        {% if stock.change < 0 %}
+                                            <span style="color: red;">▼ {{ stock.change }}</span>
+                                        {% else %}
+                                            <span style="color: green;">▲ {{ stock.change }}</span>
+                                        {% endif %}
+                                    </h5>
+                                </div>
                                 <canvas id="stockChart"></canvas>  <!-- Stock Chart -->
                             </div>
                         </div>
                     </div>
                     {% endif %}
                 </div>
-            </div>
-        </div>
+                <!-- Chart.js -->
+                <!-- Ensure Chart.js is included -->
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-        <!-- Chart.js -->
-        <!-- Ensure Chart.js is included -->
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                {% if stock.history and stock.history.dates and stock.history.prices %}
+                <script>
+                    document.addEventListener("DOMContentLoaded", function() {
+                        var canvas = document.getElementById('stockChart');
+                        if (canvas) {
+                            var ctx = canvas.getContext('2d');
 
-        {% if stock.history and stock.history.dates and stock.history.prices %}
-        <script>
-            document.addEventListener("DOMContentLoaded", function() {
-                var canvas = document.getElementById('stockChart');
-                if (canvas) {
-                    var ctx = canvas.getContext('2d');
+                            // Parse JSON safely from Django
+                            var dates = JSON.parse('{{ stock.history.dates|safe }}');  // ✅ Convert to JS array
+                            var prices = JSON.parse('{{ stock.history.prices|safe }}');  // ✅ Convert to JS array
 
-                    // Parse JSON safely from Django
-                    var dates = JSON.parse('{{ stock.history.dates|safe }}');  // ✅ Convert to JS array
-                    var prices = JSON.parse('{{ stock.history.prices|safe }}');  // ✅ Convert to JS array
-
-                    var stockChart = new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: dates,  // Use parsed JSON
-                            datasets: [{
-                                label: "{{ stock.symbol }} Stock Price",
-                                data: prices,  // Use parsed JSON
-                                borderColor: 'blue',
-                                backgroundColor: 'rgba(0, 0, 255, 0.1)',
-                                borderWidth: 2,
-                                pointRadius: 4
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            scales: {
-                                y: { beginAtZero: false }
-                            }
+                            var stockChart = new Chart(ctx, {
+                                type: 'line',
+                                data: {
+                                    labels: dates,  // Use parsed JSON
+                                    datasets: [{
+                                        label: "{{ stock.symbol }} Stock Price",
+                                        data: prices,  // Use parsed JSON
+                                        borderColor: 'blue',
+                                        backgroundColor: 'rgba(0, 0, 255, 0.1)',
+                                        borderWidth: 2,
+                                        pointRadius: 4
+                                    }]
+                                },
+                                options: {
+                                    responsive: true,
+                                    maintainAspectRatio: false,
+                                    scales: {
+                                        y: { beginAtZero: false }
+                                    }
+                                }
+                            });
                         }
                     });
-                }
-            });
-        </script>
-        {% endif %}
+                </script>
+                {% endif %}
+            </div>
+        </div>
 
         <!-- FOOTER -->
         <footer>
