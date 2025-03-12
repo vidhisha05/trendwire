@@ -68,15 +68,15 @@
     <div class="newspaper-container">
         <!-- HEADER -->
         <header>
-            TRENDWIRE
-            <p class="text-center" style="font-size: 14px;">The Best News from the First Hands</p>
+            <h1><b>TRENDWIRE</b></h1>
+            <h5 class="text-center" style="font-size: 14px;">The Best News from the First Hands</h5>
         </header>
 
         <!-- NAVIGATION BAR -->
         <nav>
+            <a href="{% url 'home' %}">Home</a>
             <a href="{% url 'fake_or_what' %}">Fake or What?</a>
             <a href="{% url 'fact_check' %}">Trending Misinformation</a>
-            <a href="{% url 'home' %}">Home</a>
         </nav>
         
         <!-- MAIN CONTENT -->
@@ -86,17 +86,83 @@
                 {% endblock %}
             </div>
             <div class="sidebar">
-                <h3>Daily News</h3>
-                <p>20.03.2025 - 12:35</p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
-                <hr>
-                <p>20.03.2025 - 12:40</p>
-                <p>Vestibulum ac diam sit amet quam vehicula elementum...</p>
-                <hr>
-                <p>20.03.2025 - 12:50</p>
-                <p>Curabitur aliquet quam id dui posuere blandit...</p>
+                <!-- Weather & Stock Section at the Top -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Weather in Hyderabad</h5>
+                                <img src="{{ weather.icon }}" alt="Weather Icon">
+                                <p><strong>{{ weather.temperature }}°C</strong> - {{ weather.description }}</p>
+                                <p>Humidity: {{ weather.humidity }}%</p>
+                                <p>Wind Speed: {{ weather.wind_speed }} m/s</p>
+                                <p>Pressure: {{ weather.pressure }} hPa</p>
+                                <p>Sunrise: {{ weather.sunrise }} | Sunset: {{ weather.sunset }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if stock.symbol %}
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <h5 class="card-title">Stock Market</h5>
+                                <p><strong>{{ stock.symbol }}</strong>: ${{ stock.latest_price }}</p>
+                                <p>
+                                    {% if stock.change < 0 %}
+                                        <span style="color: red;">▼ {{ stock.change }}</span>
+                                    {% else %}
+                                        <span style="color: green;">▲ {{ stock.change }}</span>
+                                    {% endif %}
+                                </p>
+                                <canvas id="stockChart"></canvas>  <!-- Stock Chart -->
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
+
+        <!-- Chart.js -->
+        <!-- Ensure Chart.js is included -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        {% if stock.history and stock.history.dates and stock.history.prices %}
+        <script>
+            document.addEventListener("DOMContentLoaded", function() {
+                var canvas = document.getElementById('stockChart');
+                if (canvas) {
+                    var ctx = canvas.getContext('2d');
+
+                    // Parse JSON safely from Django
+                    var dates = JSON.parse('{{ stock.history.dates|safe }}');  // ✅ Convert to JS array
+                    var prices = JSON.parse('{{ stock.history.prices|safe }}');  // ✅ Convert to JS array
+
+                    var stockChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: dates,  // Use parsed JSON
+                            datasets: [{
+                                label: "{{ stock.symbol }} Stock Price",
+                                data: prices,  // Use parsed JSON
+                                borderColor: 'blue',
+                                backgroundColor: 'rgba(0, 0, 255, 0.1)',
+                                borderWidth: 2,
+                                pointRadius: 4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: { beginAtZero: false }
+                            }
+                        }
+                    });
+                }
+            });
+        </script>
+        {% endif %}
 
         <!-- FOOTER -->
         <footer>
