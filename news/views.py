@@ -40,7 +40,8 @@ def google_news_feed(request):
     )
    
 # SerpAPI details
-SERPAPI_KEY = ""
+SERPAPI_KEY = ...
+#"661ac08d5951328611e053952f2592a53116cefa226b89170d36e48d1877658e"
 
 def get_google_image(query):
     search_url = "https://serpapi.com/search"

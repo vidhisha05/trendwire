@@ -87,11 +87,3 @@ nav ul li a {
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
-.logo {
-    width: 80px;  /* Adjust size */
-    height: auto;
-    display: block;
-    margin: 0 auto;
-    padding: 10px 0;
-}
-
