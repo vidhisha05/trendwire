@@ -67,11 +67,14 @@
 <body>
     <div class="newspaper-container">
         <!-- HEADER -->
-        <header>
-            <h1><b>TRENDWIRE</b></h1>
-            <h5 class="text-center" style="font-size: 14px;">The Best News from the First Hands</h5>
+        <header class="d-flex align-items-center justify-content-center">
+            <img style="height: 75px ;width: 75px;" src="{% static 'images/logo.png' %}" alt="TrendWire Logo" class="logo">
+            <div class="ml-3 text-center">
+                <h1><b>TRENDWIRE</b></h1>
+                <h5 style="font-size: 16px;">The Best News from the First Hands</h5>
+            </div>
         </header>
-
+        
         <!-- NAVIGATION BAR -->
         <nav>
             <a href="{% url 'home' %}">Home</a>

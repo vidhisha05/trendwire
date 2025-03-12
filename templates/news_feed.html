@@ -1,13 +1,18 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
     <div class="container-fluid">
-        
+        <!-- Advertisement Banner -->
+        <div class="text-center my-4">
+            <img src="https://d2oto3d7z6t29c.cloudfront.net/entries/transformed/58/a6/702624_b9eb7e0f29e048e4b728ed0fe29b8f3d.jpeg" alt="Advertisement" class="img-fluid w-100">
+        </div>
+    
         <!-- Latest News Section -->
         <h1 class="text-center my-4">Latest News</h1>
         <div class="row">
             {% for article in articles %}
-                <div class="col-12 col-md-6 col-lg-4">
+                <div class="col-12">
                     <div class="card h-100">
                         <img class="card-img-top img-fluid w-50 mx-auto d-block" src="{{ article.image }}" alt="News image">
                         <div class="card-body">
